@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JOJO STAND CHESS</title>
+<style>
+:root{--ink:#24133e;--purple:#39205d;--purple2:#56347d;--gold:#e7c66b;--cream:#f5edda;--paper:#fffaf0;--muted:#b9a9cf;--line:rgba(231,198,107,.28)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#56347d 0,#24133e 48%,#160d27 100%);color:var(--cream);font-family:Georgia,"Noto Sans KR",sans-serif;min-height:100vh}
+button,input{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:linear-gradient(135deg,#56347d,#39205d);color:var(--cream);padding:12px 16px;border-radius:12px;font-weight:700;transition:.18s}button:hover{transform:translateY(-2px);border-color:var(--gold);filter:brightness(1.12)}button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px clamp(16px,4vw,48px);border-bottom:1px solid var(--line);background:#1b102de8;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.brand{font-weight:1000;letter-spacing:2px;color:var(--gold);font-size:clamp(16px,2.5vw,23px)}.top-actions{display:flex;gap:8px;align-items:center}.small{padding:8px 11px;font-size:13px}
+main{max-width:1120px;margin:auto;padding:30px 20px 70px}.screen{display:none}.screen.active{display:block}.eyebrow{color:var(--gold);letter-spacing:4px;font-size:12px;font-weight:900;text-align:center}.hero{text-align:center;padding:24px 0 18px}.hero h1{font-size:clamp(38px,8vw,76px);line-height:1.0;margin:12px 0;color:#fff5d9;text-shadow:3px 4px 0 #6a428c,0 0 30px #e7c66b55;letter-spacing:-2px}.hero p{color:#d8c9e6}.hero-art{height:230px;border:1px solid var(--line);border-radius:22px;overflow:hidden;position:relative;background:linear-gradient(110deg,#2d174a,#68448b 45%,#24133e);display:grid;place-items:center;margin:25px auto;max-width:900px}
+.hero-art:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,#e7c66b55,transparent 45%),repeating-linear-gradient(125deg,transparent 0 35px,#ffffff08 36px 38px)}
+.hero-art .sun{width:150px;height:150px;border-radius:50%;background:linear-gradient(140deg,#fff0ae,#c48c42);box-shadow:0 0 70px #e7c66b88;position:absolute;right:15%;top:25px;opacity:.8}
+.hero-art .silhouette{font-size:clamp(65px,13vw,125px);z-index:1;color:#1c102d;text-shadow:4px 3px #d5ae5c;letter-spacing:8px}
+.panel{background:linear-gradient(145deg,#382153ed,#25143d);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 15px 40px #09051255}
+.lobby-card{max-width:720px;margin:0 auto;text-align:center;padding:30px}.lobby-card h2{font-size:28px;letter-spacing:5px;color:var(--gold);margin:0 0 8px}.lobby-card p{color:#cbb9db}.play-main{font-size:28px;letter-spacing:5px;color:#26153e;background:linear-gradient(135deg,#fff0a7,#d4a94c);border:0;border-radius:14px;width:min(100%,390px);padding:18px;margin:18px auto}
+.section-title{font-size:26px;color:var(--gold);letter-spacing:2px;margin:0 0 8px}.sub{color:#c6b7d4;margin:0 0 22px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.mode{display:flex;gap:15px;align-items:center;text-align:left;min-height:112px}.mode .ico{font-size:32px;width:54px;height:54px;display:grid;place-items:center;background:#e7c66b18;border-radius:14px}.mode strong{display:block;font-size:19px;color:#fff2d0}.mode small{display:block;color:#c7b7d6;margin-top:6px;line-height:1.45}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.toolbar button.active{background:var(--gold);color:#24133e}.chat-layout{display:grid;grid-template-columns:230px 1fr;gap:16px}.list{display:grid;gap:8px}.list button{text-align:left}.list button.selected{border-color:var(--gold);background:#6b498d}.chatbox{min-height:430px;display:flex;flex-direction:column}.chat-head{padding-bottom:14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px}.messages{flex:1;padding:16px 0;display:flex;flex-direction:column;gap:12px}.msg{background:#ffffff0b;border:1px solid #ffffff12;border-radius:12px;padding:10px 12px;max-width:85%}.msg b{color:var(--gold);font-size:13px}.msg p{margin:5px 0 0;line-height:1.5}.msg button{padding:4px 8px;font-size:11px;margin-top:7px}.chat-input{display:flex;gap:8px}.chat-input input,.field{background:#1b102d;color:white;border:1px solid var(--line);border-radius:10px;padding:12px;width:100%;min-width:0}.notice{border-left:4px solid var(--gold);padding:12px 16px;background:#e7c66b12;border-radius:8px;margin:14px 0}.muted{color:#bcaed0;font-size:13px}.board-wrap{display:grid;grid-template-columns:minmax(280px,560px) 1fr;gap:22px;align-items:start}.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1;border:7px solid #d4b66d;border-radius:7px;overflow:hidden;box-shadow:0 18px 40px #0007}.sq{display:grid;place-items:center;position:relative;aspect-ratio:1;font-size:clamp(22px,5vw,48px);color:#20152b;text-shadow:0 1px 1px #fff8;cursor:pointer}.sq.light{background:#e8d7b5}.sq.dark{background:#98724e}.sq.sel{outline:4px solid #55d67b;outline-offset:-4px}.sq.hint:after{content:"";width:22%;height:22%;border-radius:50%;background:#218b4d99;position:absolute}.piece-white{color:#fffdf1;text-shadow:1px 2px #29202f,0 0 2px #29202f}.piece-black{color:#21172b}.board-info{display:grid;gap:12px}.theme-preview{height:115px;border-radius:14px;border:1px solid var(--line);display:grid;place-items:center;font-size:24px;font-weight:900;color:#fff;text-shadow:0 2px 5px #000}.theme-desert{background:linear-gradient(140deg,#d4a85e,#80502c 55%,#e7d19a)}.theme-street{background:linear-gradient(140deg,#8c929b,#3e4652 55%,#b76c4b)}.theme-india{background:linear-gradient(140deg,#d77b35,#a52f42 50%,#e6c65d)}
+.loading{position:fixed;inset:0;background:#170d27f5;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}.loading.show{display:flex}.loading-card{width:min(520px,100%);text-align:center}.loading-art{height:170px;border-radius:16px;background:radial-gradient(circle at 70% 35%,#e7c66b,#7c4c91 20%,#24133e 70%);display:grid;place-items:center;font-size:70px;margin:18px 0}.bar{height:9px;background:#ffffff20;border-radius:20px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:var(--gold);transition:width .15s}.disclaimer{color:var(--gold);margin-top:18px;font-size:14px}
+.modal{position:fixed;inset:0;background:#08040dcc;z-index:30;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-card{width:min(480px,100%);background:#2c1945;border:1px solid var(--line);border-radius:18px;padding:22px}.modal-card h3{color:var(--gold);margin-top:0}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+footer{text-align:center;color:#9989ad;font-size:12px;padding:25px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.chat-layout,.board-wrap{grid-template-columns:1fr}.chat-layout .list{grid-template-columns:repeat(2,1fr)}.hero-art{height:175px}.topbar{padding:12px 14px}.top-actions .small{padding:7px 8px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">JOJO STAND CHESS</div>
+  <div class="top-actions">
+    <button class="small" onclick="showScreen('lobby')">로비</button>
+    <button class="small" onclick="toggleMusic()" id="musicBtn">♫ 음악 켜기</button>
+    <button class="small" onclick="showScreen('settings')">⚙ 설정</button>
+  </div>
+</header>
+<main>
+<section id="lobby" class="screen active">
+  <div class="hero">
+    <div class="eyebrow">STARDUST CRUSADERS · PART 3</div>
+    <h1>運命を超えろ。</h1>
+    <p>운명을 넘어, 너만의 스탠드와 함께 승부하라.</p>
+  </div>
+  <div class="hero-art"><div class="sun"></div><div class="silhouette">★　♟　★</div></div>
+  <div class="panel lobby-card">
+    <h2>LOBBY</h2><p>전투를 준비하라!</p>
+    <button class="play-main" onclick="showScreen('modes')">PLAY</button>
+    <div class="muted">메인 테마 · 오리지널 루프 음악</div>
+  </div>
+  <div class="toolbar" style="justify-content:center">
+    <button onclick="showScreen('friends')">친구</button><button onclick="showScreen('chat')">채팅</button><button onclick="showScreen('ranking')">랭킹</button><button onclick="showScreen('shop')">상점</button><button onclick="showScreen('notices')">공지사항</button>
+  </div>
+</section>
+<section id="modes" class="screen">
+  <h2 class="section-title">SELECT GAME MODE</h2><p class="sub">플레이할 전투 방식을 선택해.</p>
+  <div class="grid">
+    <button class="panel mode" onclick="showScreen('two')"><span class="ico">⚔</span><span><strong>2인 대전</strong><small>온라인 랜덤 매칭 · 로컬 대전 · 비공개 AI 대전</small></span></button>
+    <button class="panel mode" onclick="showScreen('solo')"><span class="ico">♟</span><span><strong>솔로 모드</strong><small>AI 대전 · 게임 메이커</small></span></button>
+    <button class="panel mode" onclick="showScreen('friends')"><span class="ico">♧</span><span><strong>친구</strong><small>친구 검색 · 친구 목록 · 초대 대전</small></span></button>
+    <button class="panel mode" onclick="showScreen('chat')"><span class="ico">▤</span><span><strong>채팅</strong><small>친구 1:1 채팅 · 대륙별 공개 채팅</small></span></button>
+  </div>
+  <div class="toolbar"><button onclick="showScreen('lobby')">← 로비로</button><button onclick="showScreen('ranking')">랭킹</button><button onclick="showScreen('shop')">상점</button><button onclick="showScreen('notices')">공지사항</button></div>
+</section>
+<section id="two" class="screen">
+  <h2 class="section-title">2인 대전</h2><p class="sub">상대와 실력을 겨뤄 보자.</p>
+  <div class="grid">
+    <button class="panel mode" onclick="startGame('온라인 랜덤 매칭')"><span class="ico">🌐</span><span><strong>온라인 랜덤 매칭</strong><small>비슷한 실력의 유저 찾기</small></span></button>
+    <button class="panel mode" onclick="startGame('로컬 2인 대전')"><span class="ico">♟</span><span><strong>로컬 2인</strong><small>한 기기에서 번갈아 플레이</small></span></button>
+    <button class="panel mode" onclick="startGame('비공개 AI 대전')"><span class="ico">◈</span><span><strong>비공개 AI 대전</strong><small>상대 스탠드 정보는 능력 사용 전까지 비공개</small></span></button>
+  </div><div class="toolbar"><button onclick="showScreen('modes')">← 모드 선택</button></div>
+</section>
+<section id="solo" class="screen">
+  <h2 class="section-title">솔로 모드</h2><p class="sub">혼자서 도전하거나 직접 전장을 구성해 봐.</p>
+  <div class="grid">
+    <button class="panel mode" onclick="startGame('AI 대전')"><span class="ico">🤖</span><span><strong>AI 대전</strong><small>쉬움 · 중간 · 어려움 · 익스트림</small></span></button>
+    <button class="panel mode" onclick="startGame('게임 메이커')"><span class="ico">🛠</span><span><strong>게임 메이커</strong><small>보드와 기물을 자유롭게 구성</small></span></button>
+  </div><div class="toolbar"><button onclick="showScreen('modes')">← 모드 선택</button></div>
+</section>
+<section id="game" class="screen">
+  <h2 class="section-title" id="gameTitle">전투 준비</h2><p class="sub">이번 판의 3부 배경 테마는 완전 랜덤으로 결정돼.</p>
+  <div class="board-wrap">
+    <div><div class="board" id="board" aria-label="체스판"></div><div class="muted" id="turnLabel" style="margin-top:10px">백 차례 · 시안용 보드</div></div>
+    <div class="board-info">
+      <div class="panel"><h3 style="color:var(--gold);margin-top:0">이번 경기 테마</h3><div id="themeCard" class="theme-preview">사막</div><p id="themeDesc" class="muted">이집트의 모래바람</p><button onclick="randomTheme()">테마 다시 추첨(미리보기)</button></div>
+      <div class="panel"><h3 style="color:var(--gold);margin-top:0">경기 정보</h3><p id="matchInfo" class="muted">선택한 모드가 여기에 표시돼.</p><p class="muted">현재 체스판은 화면 시안이며 온라인 대전 및 정식 체스 규칙 엔진은 아직 연결되지 않았어.</p></div>
+      <button onclick="showScreen('modes')">대전 모드로 돌아가기</button>
+    </div>
+  </div>
+</section>
+<section id="friends" class="screen">
+  <h2 class="section-title">친구</h2><p class="sub">유저를 검색하고 친구 대전을 준비해.</p>
+  <div class="panel"><label for="userSearch">닉네임 또는 계정 ID 검색</label><div class="chat-input" style="margin-top:8px"><input id="userSearch" placeholder="유저 검색"><button onclick="alert('실제 유저 검색은 서버 연결 후 사용할 수 있어.')">검색</button></div><div class="notice">친구 요청 · 수락 · 거절 · 삭제 · 친구 초대 대전 기능이 들어갈 자리야.</div></div>
+  <div class="toolbar"><button onclick="showScreen('modes')">← 모드 선택</button></div>
+</section>
+<section id="chat" class="screen">
+  <h2 class="section-title">JOJO WORLD CHAT</h2><p class="sub">대륙을 선택한 뒤 주제별 공개 채팅방에 입장해.</p>
+  <div class="panel">
+    <label for="continent">대륙 선택</label>
+    <select class="field" id="continent" onchange="renderRooms()" style="margin-top:8px">
+      <option>아시아</option><option>유럽</option><option>북아메리카</option><option>남아메리카</option><option>아프리카</option><option>오세아니아</option>
+    </select>
+    <div class="chat-layout" style="margin-top:16px">
+      <div class="list" id="roomList"></div>
+      <div class="panel chatbox">
+        <div class="chat-head"><div><strong id="roomTitle">자유 대화방</strong><div class="muted" id="roomSub">아시아 · 공개 채팅</div></div><button class="small" onclick="alert('채팅 신고에는 신고된 메시지 원문과 작성자 닉네임이 관리자에게 표시되도록 설계돼 있어. 실제 처리는 서버 구현이 필요해.')">신고 안내</button></div>
+        <div class="messages" id="messages"><div class="msg"><b>시스템</b><p>공개 채팅방 UI 미리보기야. 실제 메시지 전송은 서버 연결 후 가능해.</p></div></div>
+        <div class="chat-input"><input id="chatText" placeholder="메시지를 입력해 봐" onkeydown="if(event.key==='Enter')sendDemoMessage()"><button onclick="sendDemoMessage()">전송</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar"><button onclick="showScreen('modes')">← 모드 선택</button></div>
+</section>
+<section id="ranking" class="screen"><h2 class="section-title">랭킹</h2><div class="panel"><p>랭킹 화면 UI 자리야.</p><p class="muted">실제 점수와 순위는 대전 서버의 기록을 연결해야 표시할 수 있어.</p></div><button onclick="showScreen('lobby')">로비로</button></section>
+<section id="shop" class="screen"><h2 class="section-title">상점</h2><div class="panel"><p>운석 파편 및 꾸미기 아이템 상점 UI 자리야.</p><p class="muted">실제 결제나 재화 지급은 연결되어 있지 않아.</p></div><button onclick="showScreen('lobby')">로비로</button></section>
+<section id="notices" class="screen"><h2 class="section-title">공지사항</h2><div class="panel"><p>공지사항 목록</p><div class="notice">관리자 전용 공지 작성 기능은 서버에서 관리자 권한을 확인하도록 구현해야 해.</div><p class="muted">일반 유저는 공지를 읽을 수만 있어.</p></div><button onclick="showScreen('lobby')">로비로</button></section>
+<section id="settings" class="screen"><h2 class="section-title">설정</h2><div class="panel"><h3>음악</h3><button onclick="toggleMusic()" id="musicBtn2">♫ 음악 켜기</button><p class="muted">오리지널 신스 테마를 브라우저에서 생성해 반복 재생해. 실제 죠죠 애니메이션 음원은 포함하지 않았어.</p><label for="volume">음량</label><input id="volume" type="range" min="0" max="100" value="25" style="width:100%" oninput="setVolume(this.value)"><div class="notice">로딩 화면 고정 문구: （해당 게임은 수익을 창출하지 않습니다）</div></div><button onclick="showScreen('lobby')">로비로</button></section>
+</main>
+<footer>JOJO STAND CHESS · FAN CONCEPT PROTOTYPE</footer>
+<div class="loading" id="loading"><div class="loading-card"><div class="eyebrow">JOJO STAND CHESS</div><div class="loading-art">♟ ★ ♟</div><h2>NOW LOADING...</h2><div class="bar"><span id="loadBar"></span></div><div class="disclaimer">（해당 게임은 수익을 창출하지 않습니다）</div></div></div>
+<div class="modal" id="reportModal"><div class="modal-card"><h3>메시지 신고</h3><p class="muted">신고된 메시지 원문과 작성자 닉네임이 관리자 신고함에 표시되는 UI 예시야.</p><textarea class="field" rows="3" placeholder="신고 사유"></textarea><div class="modal-actions"><button onclick="closeReport()">취소</button><button onclick="closeReport()">신고 제출(시안)</button></div></div></div>
+<script>
+const screens=[...document.querySelectorAll('.screen')];
+function showScreen(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='chat')renderRooms()}
+function startGame(mode){document.getElementById('gameTitle').textContent=mode;document.getElementById('matchInfo').textContent=mode+' · 테마 무작위 추첨';randomTheme();const load=document.getElementById('loading'),bar=document.getElementById('loadBar');load.classList.add('show');let p=0;const timer=setInterval(()=>{p+=10;bar.style.width=p+'%';if(p>=100){clearInterval(timer);load.classList.remove('show');bar.style.width='0%';showScreen('game')}},95)}
+const themes=[{name:'사막 테마',desc:'이집트의 모래바람과 황금빛 사막',cls:'theme-desert'},{name:'거리 테마',desc:'여행길의 도시 거리와 돌바닥',cls:'theme-street'},{name:'북적이는 인도 테마',desc:'화려하고 활기찬 인도의 거리',cls:'theme-india'}];
+function randomTheme(){const t=themes[Math.floor(Math.random()*themes.length)];const card=document.getElementById('themeCard');card.className='theme-preview '+t.cls;card.textContent=t.name;document.getElementById('themeDesc').textContent=t.desc}
+const rooms=['자유 대화방','체스 전략방','스탠드 연구소','죠죠 팬덤방','파티 모집방'];let currentRoom=rooms[0];
+function renderRooms(){const list=document.getElementById('roomList');list.innerHTML='';rooms.forEach(r=>{const b=document.createElement('button');b.textContent=r;b.className=r===currentRoom?'selected':'';b.onclick=()=>{currentRoom=r;document.getElementById('roomTitle').textContent=r;document.getElementById('roomSub').textContent=document.getElementById('continent').value+' · 공개 채팅';renderRooms()};list.appendChild(b)});document.getElementById('roomTitle').textContent=currentRoom;document.getElementById('roomSub').textContent=document.getElementById('continent').value+' · 공개 채팅'}
+function sendDemoMessage(){const input=document.getElementById('chatText');const val=input.value.trim();if(!val)return;const m=document.createElement('div');m.className='msg';const b=document.createElement('b');b.textContent='미리보기 사용자';const p=document.createElement('p');p.textContent=val;const report=document.createElement('button');report.textContent='메시지 신고';report.onclick=()=>document.getElementById('reportModal').classList.add('show');m.append(b,p,report);document.getElementById('messages').appendChild(m);input.value=''}
+function closeReport(){document.getElementById('reportModal').classList.remove('show')}
+let audioCtx=null,oscillators=[],musicOn=false,master=null;
+function toggleMusic(){if(!musicOn){try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();master=audioCtx.createGain();master.gain.value=(document.getElementById('volume')?.value||25)/100*.12;master.connect(audioCtx.destination);const notes=[220,277.18,329.63,440,392,329.63,277.18,246.94];notes.forEach((freq,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=i%2?'triangle':'sawtooth';o.frequency.value=freq;g.gain.value=.0001;o.connect(g);g.connect(master);o.start();let t=audioCtx.currentTime+i*.32;g.gain.setTargetAtTime(.12,t,.025);g.gain.setTargetAtTime(.0001,t+.24,.04);oscillators.push({o,g,offset:i*.32})});let start=audioCtx.currentTime;function loop(){if(!musicOn)return;notes.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='triangle';o.frequency.value=f*2;g.gain.value=.0001;o.connect(g);g.connect(master);o.start(start+i*.32);g.gain.setTargetAtTime(.035,start+i*.32,.02);g.gain.setTargetAtTime(.0001,start+i*.32+.22,.03);o.stop(start+i*.32+.4)});start+=2.56;setTimeout(loop,2500)}musicOn=true;loop()}catch(e){alert('이 브라우저에서는 오디오를 시작할 수 없어.')}}else{musicOn=false;oscillators.forEach(x=>{try{x.o.stop()}catch(e){}});oscillators=[];if(master)master.gain.setTargetAtTime(.0001,audioCtx.currentTime,.04)}updateMusicButtons()}
+function updateMusicButtons(){['musicBtn','musicBtn2'].forEach(id=>{const b=document.getElementById(id);if(b)b.textContent=musicOn?'♫ 음악 끄기':'♫ 음악 켜기'})}
+function setVolume(v){if(master&&audioCtx)master.gain.setTargetAtTime(Number(v)/100*.12,audioCtx.currentTime,.05)}
+const pieces=['♜','♞','♝','♛','♚','♝','♞','♜'];const start=['r','n','b','q','k','b','n','r'];const glyph={r:'♜',n:'♞',b:'♝',q:'♛',k:'♚',p:'♟',R:'♜',N:'♞',B:'♝',Q:'♛',K:'♚',P:'♟'};
+let boardState=[];function initBoard(){boardState=Array(64).fill('');for(let i=0;i<8;i++){boardState[i]=start[i];boardState[8+i]='p';boardState[48+i]='P';boardState[56+i]=start[i].toUpperCase()}renderBoard()}
+let selected=-1;function renderBoard(){const b=document.getElementById('board');b.innerHTML='';boardState.forEach((p,i)=>{const s=document.createElement('div');s.className='sq '+(((Math.floor(i/8)+i%8)%2===0)?'light':'dark')+(selected===i?' sel':'');s.textContent=p?glyph[p]:'';if(p)s.classList.add(p===p.toUpperCase()?'piece-white':'piece-black');s.onclick=()=>{if(selected<0&&p){selected=i;renderBoard()}else if(selected>=0){boardState[i]=boardState[selected];boardState[selected]='';selected=-1;renderBoard();document.getElementById('turnLabel').textContent='시안용 이동이 반영됐어 · 정식 규칙 판정은 미구현'} };b.appendChild(s)})}
+initBoard();renderRooms();
+</script>
+</body></html>
